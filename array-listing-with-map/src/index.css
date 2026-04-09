@@ -29,6 +29,9 @@
     font-size: 16px;
   }
 }
+span {
+  padding: 10px;
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
