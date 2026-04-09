@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Table} from 'react-bootstrap'
 import './App.css'
 
 function App() {
@@ -35,9 +37,10 @@ function App() {
   return (
     <div className='App'>
       <h1>Handle Array With Listing</h1>
-      <table border='1'>
+      <Table striped variant='dark'>
         <thead>
           <tr>
+            <th>Count</th>
             <th>Name</th>
             <th>Email</th>
             <th>Contact</th>
@@ -46,8 +49,9 @@ function App() {
 
         <tbody>
           {
-            students.map((data, index) => (   // key index ka use react kai leya kiya hai 
+            students.map((data, index) => (   // key react kai virchualdom kai liye 
               <tr key={index}>
+                <td>{index + 1}</td>
                 <td>{data.name}</td>
                 <td>{data.email}</td>
                 <td>{data.contact}</td>
@@ -55,7 +59,7 @@ function App() {
             ))
           }
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }
