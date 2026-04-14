@@ -59,6 +59,11 @@
   text-align: center;
 }
 
+.login {
+  align-items: center;
+  text-align: center;
+}
+
 .hero {
   position: relative;
 
