@@ -38,17 +38,20 @@ function App() {
     setTodo('')
   }
 
+  // Delete API (Delete Data)
+
+  const deleteTodo = async (id) => {
+    await fetch(`https://dummyjson.com/todos/${id}`, {
+      method: "DELETE",
+    });
+
+    const updatedData = data.filter((item) => item.id !== id);
+    setData(updatedData);
+  };
+
   return (
     <>
       <h1>API Fetching + POST</h1>
-
-      {/* <input 
-      type="text"
-      value={todo}
-      onChange={(e) => setTodo(e.target.value)}
-      placeholder='Enter Todo'
-      />
-      <button onClick={addTodo}>Add Todo</button> */}
 
       <div style={{ marginBottom: "20px" }}>
         <input
@@ -62,6 +65,7 @@ function App() {
         <button onClick={addTodo} style={{ padding: "8px 15px" }}>
           Add Todo
         </button>
+
       </div>
 
       <table border="1">
@@ -71,6 +75,7 @@ function App() {
             <td>Todo</td>
             <td>Completed</td>
             <td>User ID</td>
+            <td>Action</td>
           </tr>
         </thead>
 
@@ -82,6 +87,11 @@ function App() {
                 <td>{item.todo}</td>
                 <td>{item.completed ? "Yes" : "No"}</td>
                 <td>{item.userId}</td>
+                <td>
+                  <button onClick={() => deleteTodo(item.id)}>
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))
           }
