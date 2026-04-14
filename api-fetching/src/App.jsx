@@ -5,7 +5,11 @@ function App() {
   const [data, setData] = useState([])
   const [todo, setTodo] = useState('')
 
-  // GET API (Fetch Data)
+  const [editingId, setEditingId] = useState(null)
+  const [editText, setEditText] = useState("")
+
+
+  // GET API 
 
   useEffect(() => {
     fetch('https://dummyjson.com/todos')
@@ -15,7 +19,7 @@ function App() {
       })
   }, [])
 
-  // POST API (Add Data)
+  // POST API 
 
   const addTodo = async () => {
     if (!todo) return;
@@ -38,7 +42,7 @@ function App() {
     setTodo('')
   }
 
-  // Delete API (Delete Data)
+  // Delete API 
 
   const deleteTodo = async (id) => {
     await fetch(`https://dummyjson.com/todos/${id}`, {
@@ -48,6 +52,36 @@ function App() {
     const updatedData = data.filter((item) => item.id !== id);
     setData(updatedData);
   };
+
+  //  Edit API Data
+
+  const startEdit = (item) => {
+    setEditingId(item.id)
+    setEditText(item.todo)
+  }
+
+  //  Update API
+
+  const updateTodo = async (id) => {
+    const response = await fetch(`https://dummyjson.com/todos/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        todo: editText,
+      }),
+    });
+
+    const result = await response.json();
+
+    const updatedData = data.map((item) =>
+      item.id === id ? { ...item, todo: result.todo } : item
+    );
+
+    setData(updatedData)
+    setEditingId(null)
+  }
 
   return (
     <>
@@ -84,13 +118,43 @@ function App() {
             data.map((item) => (
               <tr key={item.id}>
                 <td>{item.id}</td>
-                <td>{item.todo}</td>
+                {/* <td>{item.todo}</td> */}
+                <td>
+                  {
+                    editingId === item.id ? (
+                      <input
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                      />
+                    ) : (item.todo)
+                  }
+                </td>
+
                 <td>{item.completed ? "Yes" : "No"}</td>
                 <td>{item.userId}</td>
-                <td>
+                {/* <td>
                   <button onClick={() => deleteTodo(item.id)}>
                     Delete
                   </button>
+                </td> */}
+                <td>
+                  {
+                    editingId === item.id ? (
+                      <button onClick={() => updateTodo(item.id)}>
+                        Save
+                      </button>
+                    ) : (
+                      <>
+                        <button style={{ marginRight: "10px" }}
+                          onClick={() => startEdit(item)}>
+                          Edit
+                        </button>
+                        <button onClick={() => deleteTodo(item.id)}>
+                          Delete
+                        </button>
+                      </>
+                    )
+                  }
                 </td>
               </tr>
             ))
