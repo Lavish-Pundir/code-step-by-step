@@ -1,24 +1,13 @@
 import { useState } from 'react'
 import './App.css'
 import HomeContainer from './containers/HomeContainer'
-
-{/* import User from './user'
-function App() {
-  return (
-    <div className='App'>
-    //    <h1>React Readux</h1> 
-      <User data={{ name: "Lavish", age: 23 }} />
-    </div>
-  )
-}
-export default App */}
-
+import HeaderContainer from './containers/HeaderContainer'
 
 function App() {
     return (
         <div>
+            <HeaderContainer />
             <HomeContainer />
-            
         </div>
     )
 }
