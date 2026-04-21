@@ -2,16 +2,77 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
 
     const navigate = useNavigate();
     useEffect(() => {
         if (localStorage.getItem('user-info')) {
-            navigate("/home");   // ab history ko replace kr diya navigate nai
+            navigate("/add");   // ab history ko replace kr diya navigate nai
         }
-    }, [])
+    }, [navigate]);
+
+    async function login() {
+        // console.log("data", email, password);
+
+        if (!email || !password) {
+            alert("Please enter email and password");
+            return;
+        }
+
+        let item = { email, password }
+
+        try {
+            let response = await fetch("http://localhost:5400/api/users/login", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(item)
+            });
+            let result = await response.json();
+            // console.log("API Result:", result);
+
+            if (result && result.user) {
+                localStorage.setItem('user-info', JSON.stringify(result.user));
+            }
+
+            navigate("/add");
+
+        } catch (error) {
+            console.log("Error", error)
+        }
+
+    }
+
     return (
-        <div>
+        <div className='col-sm-6 offset-sm-3'>
             <h1> Login Page</h1>
+            <input
+                type='email'
+                className='form-control'
+                placeholder='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            /> <br />
+
+            <input
+                type='password'
+                className='form-control'
+                placeholder='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            /> <br />
+
+            <button
+                className='btn btn-primary'
+                onClick={login}
+            >
+                Login
+            </button>
+
         </div>
     )
 }
