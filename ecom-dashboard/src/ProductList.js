@@ -8,10 +8,6 @@ function ProductList() {
         getProducts();
     }, []);
 
-    useEffect(() => {
-        getProducts();
-    }, []);
-
     async function getProducts() {
         try {
             const user = JSON.parse(localStorage.getItem('user-info'));
