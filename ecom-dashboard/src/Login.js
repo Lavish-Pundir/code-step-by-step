@@ -36,8 +36,8 @@ function Login() {
             console.log("API Result:", result);
 
             if (response.ok && result.user) {
-                localStorage.setItem('user-info', JSON.stringify(result.user));
-                localStorage.setItem("token", result.token);
+                localStorage.setItem('user-info', JSON.stringify(result));
+                // localStorage.setItem("token", result.token);
                 navigate("/add");
             } else {
                 alert("Invalid credentials");

@@ -6,15 +6,51 @@ function AddProduct() {
     const [price, setPrice] = useState('');
     const [description, setDiscription] = useState('');
 
-    async function addProduct () {
-        console.log(name,file,price,description);
-        
+    async function addProduct() {
+        // console.log(name, file, price, description);
+
+        if (!name || !file || !price || !description) {
+            alert("All fields are required");
+            return;
+        }
+
+        const user = JSON.parse(localStorage.getItem('user-info'));
+        const token = user?.token;
+
+        if (!token) {
+            alert("Please login first");
+            return;
+        }
+
         const formData = new FormData();
         formData.append('name', name)
         formData.append('file', file)
         formData.append('price', price)
         formData.append('description', description)
-        let result = await fetch('')
+
+        try {
+            let response = await fetch("http://localhost:5400/api/products/add", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            let result = await response.json();
+
+            console.log("API Response:", result);
+
+            if (response.ok) {
+                alert("Product added successfully");
+            } else {
+                alert(result.message || "Something went wrong");
+            }
+
+        } catch (error) {
+            console.log("Error:", error);
+            alert("Server error");
+        }
     }
 
     return (

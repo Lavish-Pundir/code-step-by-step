@@ -40,11 +40,11 @@ function Register() {
 
             if (response.ok && result.user) {
                 //  sirf user data store karo 
-                localStorage.setItem("user-info", JSON.stringify(result.user));
-                localStorage.setItem("token", result.token);
+               localStorage.setItem('user-info', JSON.stringify(result));
+                // localStorage.setItem("token", result.token);
                 navigate("/add");
             } else {
-                alert("Registration failed");
+                alert("Account already exists. Please login.");
             }
 
         } catch (error) {
